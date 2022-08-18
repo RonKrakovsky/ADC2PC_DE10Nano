@@ -15,39 +15,37 @@ entity TOP_LEVEL is
 end entity TOP_LEVEL;
 
 architecture rtl of TOP_LEVEL is
-	-- ADC Transmitter - AVALON_MM control / external for ADC pins  
-	COMPONENT ADC_Transmitter
+	
+	COMPONENT ADC_spi_master
 	PORT
 	(
-		adc_0_adc_slave_write			:	 IN STD_LOGIC;
-		adc_0_adc_slave_readdata		:	 OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-		adc_0_adc_slave_writedata		:	 IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-		adc_0_adc_slave_address			:	 IN STD_LOGIC_VECTOR(2 DOWNTO 0);
-		adc_0_adc_slave_waitrequest		:	 OUT STD_LOGIC;
-		adc_0_adc_slave_read			:	 IN STD_LOGIC;
-		adc_0_external_interface_sclk	:	 OUT STD_LOGIC;
-		adc_0_external_interface_cs_n	:	 OUT STD_LOGIC;
-		adc_0_external_interface_dout	:	 IN STD_LOGIC;
-		adc_0_external_interface_din	:	 OUT STD_LOGIC;
-		clk_clk							:	 IN STD_LOGIC;
-		reset_reset_n					:	 IN STD_LOGIC
+		ADC_clk		:	 IN STD_LOGIC;
+		ADC_DOUT		:	 IN STD_LOGIC;
+		ADC_DIN		:	 OUT STD_LOGIC;
+		ADC_SCLK		:	 OUT STD_LOGIC;
+		ADC_CONVST		:	 OUT STD_LOGIC;
+		sampling_active		:	 OUT STD_LOGIC;
+		chanel_0		:	 OUT STD_LOGIC_VECTOR(11 DOWNTO 0);
+		chanel_1		:	 OUT STD_LOGIC_VECTOR(11 DOWNTO 0);
+		chanel_2		:	 OUT STD_LOGIC_VECTOR(11 DOWNTO 0)
 	);
-	END COMPONENT;	
+END COMPONENT;
 
-	-- ADC Controller - Control the ADC Transmitter 
-	COMPONENT ADC_Controller
+	-- div clk 
+	COMPONENT PLL
 	PORT
 	(
-		clk		:	 IN STD_LOGIC;
-		reset_n		:	 IN STD_LOGIC;
-		avm_master_read		:	 OUT STD_LOGIC;
-		avm_master_write		:	 OUT STD_LOGIC;
-		avm_master_address		:	 OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-		avm_master_readdata		:	 IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-		avm_master_writedata		:	 OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-		avm_master_waitrequest		:	 IN STD_LOGIC;
-		aso_source_data		:	 OUT STD_LOGIC_VECTOR(11 DOWNTO 0);
-		aso_source_valid		:	 OUT STD_LOGIC
+		clk_clk		:	 IN STD_LOGIC;
+		pll_0_outclk0_clk		:	 OUT STD_LOGIC;
+		reset_reset_n		:	 IN STD_LOGIC
+	);
+	END COMPONENT;
+
+	COMPONENT div_clk
+	PORT
+	(
+		clk1		:	 IN STD_LOGIC;
+		clk		:	 OUT STD_LOGIC
 	);
 	END COMPONENT;
 
@@ -55,38 +53,39 @@ architecture rtl of TOP_LEVEL is
 	signal avm_write,avm_read,avm_waitrequest : std_logic;
 	signal avm_readdata,avm_writedata : std_logic_vector(31 downto 0);
 	signal avm_addess : std_logic_vector(2 downto 0);
-	signal data_adc : std_logic_vector(11 downto 0);
+	signal data_adc_chanel0, data_adc_chanel1, data_adc_chanel2: std_logic_vector(11 downto 0);
+	signal sampling_active_adc : std_logic;
 	signal valid_adc : std_logic;
+	signal clk_40Mhz,clk_1 : std_logic;
 
 begin
-	u1 : ADC_Transmitter 
+
+	u01 : div_clk
+	port map(
+		clk1 =>clk,
+		clk => clk_1
+	);
+
+	uo : PLL
 	port map(
 		clk_clk => clk,
-		reset_reset_n => reset_n,
-		adc_0_adc_slave_write => avm_write,
-		adc_0_adc_slave_readdata => avm_readdata,
-		adc_0_adc_slave_writedata => avm_writedata,
-		adc_0_adc_slave_address => avm_addess,
-		adc_0_adc_slave_waitrequest => avm_waitrequest, 
-		adc_0_adc_slave_read => avm_read,
-		adc_0_external_interface_sclk => sclk,
-		adc_0_external_interface_cs_n => cs_n,
-		adc_0_external_interface_dout => dout,
-		adc_0_external_interface_din => din
+		pll_0_outclk0_clk => clk_40Mhz,
+		reset_reset_n => reset_n
 	);
-	
-	u2 : ADC_Controller
+
+	u1 : ADC_spi_master 
 	port map(
-		clk => clk,
-		reset_n => reset_n,
-		avm_master_read => avm_read,
-		avm_master_write => avm_write,
-		avm_master_address => avm_addess,
-		avm_master_readdata => avm_readdata,
-		avm_master_writedata => avm_writedata,
-		avm_master_waitrequest => avm_waitrequest,
-		aso_source_data => data_adc,
-		aso_source_valid => valid_adc
+		ADC_clk => clk_40Mhz,
+		ADC_DOUT => dout,	
+		ADC_DIN => din,
+		ADC_SCLK => sclk,
+		ADC_CONVST => cs_n,
+		sampling_active => sampling_active_adc,
+		chanel_0 => data_adc_chanel0,
+		chanel_1 => data_adc_chanel1,
+		chanel_2 => data_adc_chanel2
+
 	);
+
 	
 end architecture rtl;
