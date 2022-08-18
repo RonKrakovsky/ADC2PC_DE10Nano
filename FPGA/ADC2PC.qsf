@@ -109,15 +109,6 @@ set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[7] -t
 set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[15] -to auto_signaltap_1|gnd -section_id auto_signaltap_1
 set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[30] -to auto_signaltap_1|vcc -section_id auto_signaltap_1
 set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[31] -to auto_signaltap_1|vcc -section_id auto_signaltap_1
-set_global_assignment -name VHDL_FILE source/Uart_manager.vhd
-set_global_assignment -name VHDL_FILE source/clock_divide_uart.vhd
-set_global_assignment -name VHDL_FILE source/UartTx.vhd
-set_global_assignment -name VHDL_FILE source/ADC_spi_master.vhd
-set_global_assignment -name QIP_FILE qsys/PLL/synthesis/PLL.qip
-set_global_assignment -name VHDL_FILE source/div_clk.vhd
-set_global_assignment -name VHDL_FILE source/TOP_LEVEL.vhd
-set_global_assignment -name SIGNALTAP_FILE stp1.stp
-set_global_assignment -name BDF_FILE test_uart.bdf
 set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[1] -to "Uart_manager:inst5|channel[0]" -section_id auto_signaltap_1
 set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[2] -to "Uart_manager:inst5|channel[1]" -section_id auto_signaltap_1
 set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[3] -to "Uart_manager:inst5|channel[2]" -section_id auto_signaltap_1
@@ -163,5 +154,15 @@ set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[21] -
 set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[24] -to auto_signaltap_1|gnd -section_id auto_signaltap_1
 set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[27] -to auto_signaltap_1|vcc -section_id auto_signaltap_1
 set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[28] -to auto_signaltap_1|gnd -section_id auto_signaltap_1
+set_global_assignment -name VHDL_FILE source/UartRx.vhd
+set_global_assignment -name VHDL_FILE source/Uart_manager.vhd
+set_global_assignment -name VHDL_FILE source/clock_divide_uart.vhd
+set_global_assignment -name VHDL_FILE source/UartTx.vhd
+set_global_assignment -name VHDL_FILE source/ADC_spi_master.vhd
+set_global_assignment -name QIP_FILE qsys/PLL/synthesis/PLL.qip
+set_global_assignment -name VHDL_FILE source/div_clk.vhd
+set_global_assignment -name VHDL_FILE source/TOP_LEVEL.vhd
+set_global_assignment -name SIGNALTAP_FILE stp1.stp
+set_global_assignment -name BDF_FILE test_uart.bdf
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 set_global_assignment -name SLD_FILE db/stp1_auto_stripped.stp
