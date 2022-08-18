@@ -49,6 +49,28 @@ END COMPONENT;
 	);
 	END COMPONENT;
 
+	COMPONENT clock_divide_uart
+	GENERIC ( f_in : INTEGER := 50000000; f_out : INTEGER := 9600 );
+	PORT
+	(
+		i_clk		:	 IN STD_LOGIC;
+		i_reset		:	 IN STD_LOGIC;
+		o_clock		:	 OUT STD_LOGIC
+	);
+	END COMPONENT;
+
+	COMPONENT UartTx
+	GENERIC ( bit_data : INTEGER := 8; Stop_bit : INTEGER := 2 );
+	PORT
+	(
+		i_Clk		:	 IN STD_LOGIC;
+		i_reset		:	 IN STD_LOGIC;
+		i_start		:	 IN STD_LOGIC;
+		i_data		:	 IN STD_LOGIC_VECTOR(bit_data-1 DOWNTO 0);
+		o_active		:	 OUT STD_LOGIC;
+		o_Serial		:	 OUT STD_LOGIC
+	);
+	END COMPONENT;
 	------------------------------------------------- signals 
 	signal avm_write,avm_read,avm_waitrequest : std_logic;
 	signal avm_readdata,avm_writedata : std_logic_vector(31 downto 0);

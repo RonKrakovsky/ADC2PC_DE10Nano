@@ -39,9 +39,9 @@ architecture behavioral of ADC_spi_master is
 	 
 begin
 	ADC_SCLK <= ADC_clk;
-	config_bits <= "100010000000000000" when chanel = 0 else
-					"110010000000000000" when chanel = 1 else
-					"110110000000000000";
+	config_bits <= "100010000000000000" when chanel = 0 else --channel 7
+					"110010000000000000" when chanel = 1 else -- --channel 5
+					"110110000000000000"; -- --channel 1
 
 	--sampled_data_integer <= to_integer(unsigned(sampled_data));
 	--test_out <= sampled_data;
