@@ -54,7 +54,7 @@ agreement for further details.
 )
 (pin
 	(input)
-	(rect 176 616 344 632)
+	(rect 768 552 936 568)
 	(text "INPUT" (rect 125 0 153 10)(font "Arial" (font_size 6)))
 	(text "Rx" (rect 5 0 19 12)(font "Arial" ))
 	(pt 168 8)
@@ -115,46 +115,6 @@ agreement for further details.
 		(line (pt 16 16)(pt 24 8))
 		(line (pt 8 8)(pt 24 8))
 	)
-)
-(symbol
-	(rect 376 216 536 296)
-	(text "clock_divide_uart" (rect 5 0 91 12)(font "Arial" ))
-	(text "inst1" (rect 8 64 30 81)(font "Intel Clear" ))
-	(port
-		(pt 0 32)
-		(input)
-		(text "i_clk" (rect 0 0 22 12)(font "Arial" ))
-		(text "i_clk" (rect 21 27 43 39)(font "Arial" ))
-		(line (pt 0 32)(pt 16 32))
-	)
-	(port
-		(pt 0 48)
-		(input)
-		(text "i_reset" (rect 0 0 33 12)(font "Arial" ))
-		(text "i_reset" (rect 21 43 54 55)(font "Arial" ))
-		(line (pt 0 48)(pt 16 48))
-	)
-	(port
-		(pt 160 32)
-		(output)
-		(text "o_clock" (rect 0 0 37 12)(font "Arial" ))
-		(text "o_clock" (rect 108 27 145 39)(font "Arial" ))
-		(line (pt 160 32)(pt 144 32))
-	)
-	(parameter
-		"f_in"
-		"50000000"
-		""
-		(type "PARAMETER_SIGNED_DEC")	)
-	(parameter
-		"f_out"
-		"9600"
-		""
-		(type "PARAMETER_SIGNED_DEC")	)
-	(drawing
-		(rectangle (rect 16 16 144 64))
-	)
-	(annotation_block (parameter)(rect 536 152 732 209))
 )
 (symbol
 	(rect 968 320 1176 432)
@@ -220,7 +180,7 @@ agreement for further details.
 (symbol
 	(rect 976 496 1184 608)
 	(text "UartRx" (rect 5 0 40 12)(font "Arial" ))
-	(text "inst2" (rect 8 96 30 113)(font "Intel Clear" ))
+	(text "inst2" (rect 8 96 31 108)(font "Arial" ))
 	(port
 		(pt 0 32)
 		(input)
@@ -246,14 +206,14 @@ agreement for further details.
 		(pt 208 32)
 		(output)
 		(text "o_data[bit_data-1..0]" (rect 0 0 101 12)(font "Arial" ))
-		(text "o_data[bit_data-1..0]" (rect 102 27 203 39)(font "Arial" ))
+		(text "o_data[bit_data-1..0]" (rect 102 27 187 39)(font "Arial" ))
 		(line (pt 208 32)(pt 192 32)(line_width 3))
 	)
 	(port
 		(pt 208 48)
 		(output)
 		(text "o_valid" (rect 0 0 35 12)(font "Arial" ))
-		(text "o_valid" (rect 158 43 193 55)(font "Arial" ))
+		(text "o_valid" (rect 158 43 187 55)(font "Arial" ))
 		(line (pt 208 48)(pt 192 48))
 	)
 	(parameter
@@ -349,6 +309,46 @@ agreement for further details.
 		(rectangle (rect 16 16 224 160))
 	)
 )
+(symbol
+	(rect 376 216 536 296)
+	(text "clock_divide_uart" (rect 5 0 91 12)(font "Arial" ))
+	(text "inst1" (rect 8 64 30 81)(font "Intel Clear" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "i_clk" (rect 0 0 22 12)(font "Arial" ))
+		(text "i_clk" (rect 21 27 43 39)(font "Arial" ))
+		(line (pt 0 32)(pt 16 32))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "i_reset" (rect 0 0 33 12)(font "Arial" ))
+		(text "i_reset" (rect 21 43 54 55)(font "Arial" ))
+		(line (pt 0 48)(pt 16 48))
+	)
+	(port
+		(pt 160 32)
+		(output)
+		(text "o_clock" (rect 0 0 37 12)(font "Arial" ))
+		(text "o_clock" (rect 108 27 145 39)(font "Arial" ))
+		(line (pt 160 32)(pt 144 32))
+	)
+	(parameter
+		"f_in"
+		"50000000"
+		""
+		(type "PARAMETER_SIGNED_DEC")	)
+	(parameter
+		"f_out"
+		"38400"
+		""
+		(type "PARAMETER_SIGNED_DEC")	)
+	(drawing
+		(rectangle (rect 16 16 144 64))
+	)
+	(annotation_block (parameter)(rect 536 152 732 209))
+)
 (connector
 	(pt 360 248)
 	(pt 376 248)
@@ -360,15 +360,6 @@ agreement for further details.
 (connector
 	(pt 352 264)
 	(pt 376 264)
-)
-(connector
-	(pt 536 624)
-	(pt 536 632)
-)
-(connector
-	(text "sig_rx" (rect 354 608 381 625)(font "Intel Clear" ))
-	(pt 344 624)
-	(pt 536 624)
 )
 (connector
 	(pt 1176 368)
@@ -466,20 +457,12 @@ agreement for further details.
 	(pt 448 368)
 )
 (connector
-	(pt 448 368)
-	(pt 968 368)
-)
-(connector
 	(pt 512 408)
 	(pt 488 408)
 )
 (connector
 	(pt 488 328)
 	(pt 488 408)
-)
-(connector
-	(pt 576 328)
-	(pt 488 328)
 )
 (connector
 	(pt 576 328)
@@ -515,8 +498,68 @@ agreement for further details.
 	(pt 384 448)
 	(bus)
 )
+(connector
+	(pt 880 328)
+	(pt 880 528)
+)
+(connector
+	(pt 488 328)
+	(pt 576 328)
+)
+(connector
+	(pt 576 328)
+	(pt 880 328)
+)
+(connector
+	(pt 880 528)
+	(pt 976 528)
+)
+(connector
+	(pt 976 544)
+	(pt 824 544)
+)
+(connector
+	(pt 824 544)
+	(pt 824 368)
+)
+(connector
+	(pt 448 368)
+	(pt 824 368)
+)
+(connector
+	(pt 824 368)
+	(pt 968 368)
+)
+(connector
+	(pt 936 560)
+	(pt 976 560)
+)
+(connector
+	(text "data_rx[7..0]" (rect 1194 512 1253 529)(font "Intel Clear" ))
+	(pt 1184 528)
+	(pt 1280 528)
+	(bus)
+)
+(connector
+	(text "data_rx[7..0]" (rect 450 488 509 505)(font "Intel Clear" ))
+	(pt 512 504)
+	(pt 440 504)
+	(bus)
+)
+(connector
+	(text "valid_rx_out" (rect 1194 528 1253 545)(font "Intel Clear" ))
+	(pt 1184 544)
+	(pt 1280 544)
+)
+(connector
+	(text "valid_rx_out" (rect 450 504 509 521)(font "Intel Clear" ))
+	(pt 512 520)
+	(pt 440 520)
+)
 (junction (pt 352 344))
 (junction (pt 496 472))
 (junction (pt 496 456))
 (junction (pt 448 368))
 (junction (pt 576 248))
+(junction (pt 576 328))
+(junction (pt 824 368))

@@ -49,7 +49,7 @@ begin
 
 	process (i_Clk)
 	begin
-		if(i_reset = '1') then
+		if(i_reset = '0') then
 			stage_main <= s_Idle;
 		elsif rising_edge(i_Clk) then
 			case stage_main is

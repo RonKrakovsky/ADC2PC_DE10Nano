@@ -22,6 +22,7 @@ end entity Uart_manager;
 
 architecture rtl of Uart_manager is
 	signal channel : integer range 10 downto 0;
+	signal sig_valid_start : std_logic;
 
 	type t_State is (init_state, tx_state);
 	 signal State : t_State;
@@ -30,13 +31,15 @@ begin
 	proc_name: process(clk)
 	begin
 		if reset_n = '0' then 
-			o_valid_start <= '0';
+			sig_valid_start <= '0';
 			o_data2uart <= (others => '0');
 			State <= init_state;
 		elsif rising_edge(clk) then
 			
 			case state is
 				when init_state =>
+					sig_valid_start <= '0';
+					channel <= 0;
 					if i_valid_Rx = '1' and i_data_Rx = "11110000" then 
 						state <= tx_state;
 					end if;
@@ -45,34 +48,34 @@ begin
 					
 					if channel < 2 then 
 						if channel = 0 then 
-							o_data2uart <= "0000" & i_channel_0(11 downto 8);
-						else
 							o_data2uart <= i_channel_0(7 downto 0);
+						else
+							o_data2uart <= "0000" & i_channel_0(11 downto 8);
 						end if;
 
 					elsif channel < 4 then 
 						if channel = 2 then 
-							o_data2uart <= "0000" & i_channel_1(11 downto 8);
-						else
 							o_data2uart <= i_channel_1(7 downto 0);
+						else
+							o_data2uart <= "0000" & i_channel_1(11 downto 8);
 						end if;
 					else
 						if channel = 4 then 
-							o_data2uart <= "0000" & i_channel_2(11 downto 8);
+							o_data2uart <= i_channel_2(7 downto 0); 
 						else
-							o_data2uart <= i_channel_2(7 downto 0);
+							o_data2uart <= "0000" & i_channel_2(11 downto 8);
 						end if;
 					end if;
 				
 					if i_valid_tx = '0' then 
-						o_valid_start <= '1';
+						
 						if channel = 5 then 
 							channel <= 0;
 							state <= init_state;
-						else
+						elsif sig_valid_start = '1' then 
 							channel <= channel + 1;
 						end if;
-
+						sig_valid_start <= '1';
 					end if;
 			
 			end case;
@@ -82,5 +85,5 @@ begin
 			
 		end if;
 	end process proc_name;
-	
+	o_valid_start <= sig_valid_start;
 end architecture rtl;
