@@ -24,6 +24,7 @@ architecture rtl of Uart_manager is
 	signal channel : integer range 10 downto 0;
 	signal counter_sample : integer range 30 downto 0;
 	signal sig_valid_start : std_logic;
+	signal sig_data_Tx : std_logic_vector(7 downto 0);
 
 	type t_State is (init_state, tx_state);
 	 signal State : t_State;
@@ -52,21 +53,24 @@ begin
 					if channel < 2 then 
 						if channel = 0 then 
 							o_data2uart <= i_channel_0(7 downto 0);
+							sig_data_Tx <= "0000" & i_channel_0(11 downto 8);
 						else
-							o_data2uart <= "0000" & i_channel_0(11 downto 8);
+							o_data2uart <= sig_data_Tx;
 						end if;
 
 					elsif channel < 4 then 
 						if channel = 2 then 
 							o_data2uart <= i_channel_1(7 downto 0);
+							sig_data_Tx <= "0000" & i_channel_1(11 downto 8);
 						else
-							o_data2uart <= "0000" & i_channel_1(11 downto 8);
+							o_data2uart <= sig_data_Tx;
 						end if;
 					else
 						if channel = 4 then 
 							o_data2uart <= i_channel_2(7 downto 0); 
+							sig_data_Tx <= "0000" & i_channel_2(11 downto 8);
 						else
-							o_data2uart <= "0000" & i_channel_2(11 downto 8);
+							o_data2uart <= sig_data_Tx;
 						end if;
 					end if;
 				
@@ -74,7 +78,7 @@ begin
 
 						if channel = 5 then 
 							channel <= 0;
-							if counter_sample = 20 then 
+							if counter_sample = 20 then -- 20 works 
 								state <= init_state;
 								counter_sample <= 0;
 							else

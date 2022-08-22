@@ -1,15 +1,16 @@
 clear all;
 close all;
+samples = 20;
 % device = serialport("COM9",1000000);
 % device.StopBits = 2;
 %device.Timeout = 60;
 
-time = 1:1:10;
+time = 1:1:samples;
 i = 1;
-channel_0 = zeros(1,10,'uint16');
+channel_0 = zeros(1,samples,'uint16');
 f1 = figure;    
 hold on;
-xlim([0 10]);
+xlim([0 samples]);
 ylim([0 5000]);
 axis_x = [];
 axis_y = [];
@@ -19,16 +20,18 @@ while 1
     device.StopBits = 2;
     
     write(device,240,"uint8");% synchronize UART data from FPGA
-    x = read(device,30,"uint16");% data in ADC 12bit 
+    x = read(device,samples*3,"uint16");% data in ADC 12bit 
+    
     axis_x = [];
     axis_y = [];
 
     
     
-    s = 10;
+    s = samples;
     i = 1;
     for c = 1:s
-        if i > 30
+        if i > samples*3
+            
             drawnow;
             break;
         else
