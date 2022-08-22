@@ -22,6 +22,7 @@ end entity Uart_manager;
 
 architecture rtl of Uart_manager is
 	signal channel : integer range 10 downto 0;
+	signal counter_sample : integer range 30 downto 0;
 	signal sig_valid_start : std_logic;
 
 	type t_State is (init_state, tx_state);
@@ -34,12 +35,14 @@ begin
 			sig_valid_start <= '0';
 			o_data2uart <= (others => '0');
 			State <= init_state;
+			counter_sample <= 0;
 		elsif rising_edge(clk) then
 			
 			case state is
 				when init_state =>
 					sig_valid_start <= '0';
 					channel <= 0;
+					counter_sample <= 0;
 					if i_valid_Rx = '1' and i_data_Rx = "11110000" then 
 						state <= tx_state;
 					end if;
@@ -68,14 +71,21 @@ begin
 					end if;
 				
 					if i_valid_tx = '0' then 
-						
+
 						if channel = 5 then 
 							channel <= 0;
-							state <= init_state;
+							if counter_sample = 20 then 
+								state <= init_state;
+								counter_sample <= 0;
+							else
+								counter_sample <= counter_sample + 1;
+							end if;
+							
 						elsif sig_valid_start = '1' then 
 							channel <= channel + 1;
 						end if;
 						sig_valid_start <= '1';
+
 					end if;
 			
 			end case;

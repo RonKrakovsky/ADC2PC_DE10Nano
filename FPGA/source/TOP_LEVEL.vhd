@@ -53,7 +53,7 @@ END COMPONENT;
 	END COMPONENT;
 
 	COMPONENT clock_divide_uart
-	GENERIC ( f_in : INTEGER := 50000000; f_out : INTEGER := 250000 );
+	GENERIC ( f_in : INTEGER := 50000000; f_out : INTEGER := 1000000 );
 	PORT
 	(
 		i_clk		:	 IN STD_LOGIC;
