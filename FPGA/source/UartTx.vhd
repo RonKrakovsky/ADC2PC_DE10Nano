@@ -1,23 +1,5 @@
 --this entity is the UART transmitter.
---Parallel Input Serial Output.
------------------------------------------------------------------
---entity pin discription :
---	inputs 	:
---					i_clk			  - input clock signal.
---					i_start			  - input start transmit information,active high.
---					i_reset			  - input reset, active high.
--- 					i_data			  - input Parallel data.
-
---	outputs	:
--- 				o_active			  - output that represent the activity uart, if UART transmit the data
---											 ,output "o_active" is high.
--- 				o_Serial         - output serial data.
------------------------------------------------------------------
---entity generics discription :
---					clock 			  - clock that use UART.
--- 				baud_UART        - bits per second.
--- 				bit_data         - The width of the bits information in each frame.	
--- 				Stop_bit         - How many stop bits.	
+--Parallel Input Serial Output.	
 
 library ieee;
 use ieee.std_logic_1164.all;

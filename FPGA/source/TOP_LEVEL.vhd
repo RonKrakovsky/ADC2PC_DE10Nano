@@ -1,3 +1,6 @@
+--top level of this project
+--22/08/2022 
+
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
@@ -7,11 +10,13 @@ entity TOP_LEVEL is
 		clk		: in std_logic;
 		reset_n	: in std_logic;
 
+		-- ADC Pins 
 		sclk	: out std_logic;
 		cs_n	: out std_logic;
 		dout	: in std_logic;
 		din		: out std_logic;
 
+		-- UART Pins
 		o_Tx 	: out std_logic;
 		i_Rx	: in std_logic
 	);
@@ -19,6 +24,7 @@ end entity TOP_LEVEL;
 
 architecture rtl of TOP_LEVEL is
 	
+	-- ADC module
 	COMPONENT ADC_spi_master
 	PORT
 	(
@@ -34,7 +40,7 @@ architecture rtl of TOP_LEVEL is
 	);
 END COMPONENT;
 
-	-- div clk 
+	-- clock divider for ADC = 40Mhz 
 	COMPONENT PLL
 	PORT
 	(
@@ -44,14 +50,7 @@ END COMPONENT;
 	);
 	END COMPONENT;
 
-	COMPONENT div_clk
-	PORT
-	(
-		clk1		:	 IN STD_LOGIC;
-		clk		:	 OUT STD_LOGIC
-	);
-	END COMPONENT;
-
+	-- clock divider for UART = 1Mhz 
 	COMPONENT clock_divide_uart
 	GENERIC ( f_in : INTEGER := 50000000; f_out : INTEGER := 1000000 );
 	PORT
@@ -62,6 +61,7 @@ END COMPONENT;
 	);
 	END COMPONENT;
 
+	-- UART transmiter 
 	COMPONENT UartTx
 	GENERIC ( bit_data : INTEGER := 8; Stop_bit : INTEGER := 2 );
 	PORT
@@ -75,6 +75,7 @@ END COMPONENT;
 	);
 	END COMPONENT;
 
+	-- UART reciver
 	COMPONENT UartRx
 	GENERIC ( bit_data : INTEGER := 8; Stop_bit : INTEGER := 2 );
 	PORT
@@ -87,6 +88,7 @@ END COMPONENT;
 	);
 	END COMPONENT;
 
+	-- UART manager control synch with PC and number of samples need to transmit
 	COMPONENT Uart_manager
 	PORT
 	(
@@ -115,12 +117,6 @@ END COMPONENT;
 	signal sig_parallel_uart,sig_parallel_uart_rx : std_logic_vector(7 downto 0);
 
 begin
-
-	u01 : div_clk
-	port map(
-		clk1 =>clk,
-		clk => clk_1
-	);
 
 	uo : PLL
 	port map(

@@ -1,7 +1,6 @@
 
--- module for controlling DE1-SOC ADC LTC2308
+-- module for controlling DE10-nano SOC ADC LTC2308
 
--- Dependencies (Libraries and packages)
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;

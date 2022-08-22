@@ -1,3 +1,7 @@
+-- clock divider 
+-- f_in = input clock 
+-- f_out = output clock 
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
